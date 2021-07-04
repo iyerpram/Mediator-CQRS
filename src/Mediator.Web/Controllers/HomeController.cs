@@ -7,6 +7,7 @@ using Mediator.Models;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Mediator.Web.Controllers
 {
@@ -33,9 +34,9 @@ namespace Mediator.Web.Controllers
             {
                 var response = await _mediator.Send(new GetOrdersQuery
                 {
-                    OrderId = Guid.NewGuid(),
-                    OrderDate = DateTime.Now.AddDays(-10),
-                    OrderStatus = "Shipped"
+                    StartDate = DateTime.Parse("01/01/2021"),
+                    EndDate = DateTime.Parse("03/01/2021"),
+                    OrderStatuses = new List<string> { "Shipped", "Delivered" }
                 });
 
                 if (response == null || !response.Any())

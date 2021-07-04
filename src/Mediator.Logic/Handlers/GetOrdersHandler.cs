@@ -2,6 +2,7 @@
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,25 +12,12 @@ namespace Mediator.Logic
     {
         public async Task<List<Order>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
         {
-            return await Task.Run<List<Order>>(() => new List<Order> {
-                new Order {
-                    OrderId = Guid.NewGuid(),
-                    OrderDate = DateTime.Now.AddDays(-5),
-                    OrderStatus = "Shipped",
-                    Total = 1000.0M
-                },
-                 new Order {
-                    OrderId = Guid.NewGuid(),
-                    OrderDate = DateTime.Now.AddDays(-10),
-                    OrderStatus = "Out for delivery",
-                    Total = 1050.0M
-                },
-                 new Order {
-                    OrderId = Guid.NewGuid(),
-                    OrderDate = DateTime.Now.AddDays(-20),
-                    OrderStatus = "Delivered",
-                    Total = 2550.0M
-                }
+            return await Task.Run<List<Order>>(() =>
+            {
+                return OrderProvider.Orders
+                    .Where(x => x.OrderDate >= request.StartDate && x.OrderDate <= request.EndDate 
+                                && request.OrderStatuses.Any(status => x.OrderStatus.Equals(status, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
             });
         }
     }
