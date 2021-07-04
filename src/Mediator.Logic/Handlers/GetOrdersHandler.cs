@@ -12,7 +12,7 @@ namespace Mediator.Logic
     {
         public async Task<List<Order>> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
         {
-            return await Task.Run<List<Order>>(() =>
+            return await Task.Run(() =>
             {
                 return OrderProvider.Orders
                     .Where(x => x.OrderDate >= request.StartDate && x.OrderDate <= request.EndDate 
