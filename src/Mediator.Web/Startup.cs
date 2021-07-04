@@ -1,3 +1,5 @@
+using Mediator.Logic;
+using Mediator.Models;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +27,9 @@ namespace Mediator.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            var logicAssembly = Assembly.GetAssembly(typeof(GetOrdersHandler));
+            var modelsAssembly = Assembly.GetAssembly(typeof(GetOrdersQuery));
+            services.AddMediatR(Assembly.GetExecutingAssembly(), modelsAssembly, logicAssembly);
             services.AddControllersWithViews();
         }
 
