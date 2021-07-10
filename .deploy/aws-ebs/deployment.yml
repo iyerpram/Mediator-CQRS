@@ -1,0 +1,40 @@
+name: .NET
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+    - name: Elastic Beanstalk Deployment
+      # You may pin to the exact commit or the version.
+      # uses: kumarshivam12/Aws-ElasticBeanstalk@3110dbc44126aba53f10be9d506f542d9e7d5d4f
+      uses: kumarshivam12/Aws-ElasticBeanstalk@v1.4
+      with:
+        # Enter The Name of the S3 Bucket
+        EB-BUCKET-NAME: 
+        # Enter the name of the Elastic BeanStalk Application
+        APPLICATION-NAME: 
+        # Name of the Elastic beanstalk Environment
+        EB-ENV-NAME: 
+        # 
+        DEPLOY-PACKAGE-NAME: # optional
+        # Enter the Region
+        AWS-REGION: 
