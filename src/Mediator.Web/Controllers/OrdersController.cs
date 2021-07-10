@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Mediator.Web.Controllers
 {
+    [ApiController]
     [Route("Orders")]
     public class OrdersController : Controller
     {
