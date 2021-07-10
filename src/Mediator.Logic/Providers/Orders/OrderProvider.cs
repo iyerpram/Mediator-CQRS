@@ -11,19 +11,37 @@ namespace Mediator.Logic
                     OrderId = 1,
                     OrderDate = DateTime.Parse("01/01/2021"),
                     OrderStatus = "Shipped",
-                    Total = 1000.0M
+                    Products = new List<Product> { 
+                        new Product { 
+                            Id = 1,
+                            ProductName = "Samsung Mobile",
+                            Price = 350
+                        }
+                    }
                 },
                  new Order {
                     OrderId = 2,
                     OrderDate = DateTime.Parse("02/01/2021"),
                     OrderStatus = "Out for delivery",
-                    Total = 1050.0M
+                    Products = new List<Product> {
+                        new Product {
+                            Id = 1,
+                            ProductName = "LG Refrigerator",
+                            Price = 450
+                        }
+                    }
                 },
                  new Order {
                     OrderId = 3,
                     OrderDate = DateTime.Parse("03/01/2021"),
                     OrderStatus = "Delivered",
-                    Total = 2550.0M
+                    Products = new List<Product> {
+                        new Product {
+                            Id = 1,
+                            ProductName = "Samsung Tv",
+                            Price = 550
+                        }
+                    }
                 }
         };
 

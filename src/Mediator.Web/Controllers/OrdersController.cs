@@ -1,4 +1,5 @@
-﻿using Mediator.Models;
+﻿using Mapster;
+using Mediator.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace Mediator.Web.Controllers
 {
+    [Route("Orders")]
     public class OrdersController : Controller
     {
         #region Properties
@@ -24,8 +26,7 @@ namespace Mediator.Web.Controllers
         }
         #endregion Constructor
 
-        #region Orders
-        [Route("Orders")]
+        #region Orders        
         public async Task<IActionResult> Get()
         {
             try
@@ -49,7 +50,7 @@ namespace Mediator.Web.Controllers
             }
         }
 
-        [Route("Orders/{id}")]
+        [Route("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -68,6 +69,48 @@ namespace Mediator.Web.Controllers
             {
                 _logger.LogError(ex, "Error occured fetching orders");
                 return StatusCode(500, "Error occurred fetching orders");
+            }
+        }
+
+        [Route("Add")]
+        [HttpPost]
+        public async Task<IActionResult> Add([FromBody]Order order)
+        {
+            try
+            {
+                if (order == null)
+                    return BadRequest();
+
+                var command = order.Adapt<AddOrderCommand>();
+                await _mediator.Send(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding order");
+                return StatusCode(500, "Error adding order");
+            }
+        }
+
+        [Route("Update")]
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody]OrderInfo order)
+        {
+            try
+            {
+                if (order == null)
+                    return BadRequest();
+
+                var command = order.Adapt<UpdateOrderCommand>();
+                await _mediator.Send(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding order");
+                return StatusCode(500, "Error adding order");
             }
         }
         #endregion Orders
